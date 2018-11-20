@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+
+<!-- import d3.v5..min.js -->
+<script src = "https://d3js.org/d3.v5.min.js"> </script>
+
+
+<head>
+
+    <title> Just trying out d3 visualizations </title>
+
+    <!-- meta info -->
+    <meta charset="uft-8">
+    <meta name = "description" content = "Just a trial file of what d3 can do">
+    <meta name = "author" content = "Shaun Jose">
+
+    <!-- refresh document every 10 minutes -->
+    <meta http-equiv="refresh" content="3000 ">
+
+</head>
+
+<body>
+
+    <h1> Hi? </h1>
+
+    <!-- add cool crazy shtuff -->
+
+    <!-- define svg (to be used for main visualization) -->
+    <svg id = "mad_shtuff" width = "100%" height = "100%"/>
+
+    <script>
+        d3.select('h1').style('color', 'red');
+
+        d3.select("body")
+          .selectAll("p")
+          .data([4, 8, 15, 16, 23, 42])
+          .enter().append("p")
+            .text(function(d) { return "I’m number " + d + "!"; });
+    </script>
+
+</body>
+
+
+</html>
