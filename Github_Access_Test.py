@@ -65,3 +65,17 @@ def test_get_names():
 
     # None name check --> Not applicable. Every github repo will have a name
     #user_object_list = [NamedUser(), NamedUser(), NamedUser()]
+
+
+#testing method get_member_repos_contribs
+#NOTE: Cannot test properly, as code in get_member_repos_contribs() is DIRTY (i.e. results can keep changing over time)
+def test_get_contribs():
+
+    #a small test added. May fail in the future
+    username = "ShaunJose"
+
+    expected_result = set(["ShaunJose","yingl"])
+    result = get_member_repos_contribs(username)
+    empty_set = set()
+
+    assert (expected_result - result) == empty_set
