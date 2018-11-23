@@ -8,7 +8,13 @@ ACCESS_TOKEN = "1f24b75e991ab17fa02a3bb1df8dec255e77fbd6"
 g = Github(ACCESS_TOKEN)
 
 #organisation that's being targetted here
-ORGANIZATION_NAME = "github"
+ORGANIZATION_NAME = "HubSpot"
+
+#max number of contributors for a repository
+#CONTRIBUTOR_LIMIT = 400
+
+# number of repositories check per user. set to -1 for no limit
+#REPO_LIMIT = 45
 
 
 # Get logins from a list of objects
@@ -29,50 +35,34 @@ def get_logins_from_users(objects_list):
     return logins
 
 
-# Get names from a list of repository objects
-def get_names_from_repos(objects_list):
-    """
-    Gets all the repository names from a list of repository objects.
-
-    @param objects_list: A list of repository objects
-
-    return: a list of names of all the repository objects in objects_list
-    """
-
-    names = []
-    for obj in objects_list:
-        name = obj.full_name
-        names.append(name)
-
-    return names
-
-
 # Get contributors to all repos of a member
-def get_member_repos_contribs(login_id):
+def get_member_repos_contribs(member, member_objects):
     """
-    Returns all contributors to all repositories of a github user
+    Returns a list of all the contributors to REPO_LIMIT/all repositories of a github user, that are in the organization specified by ORGANIZATION_NAME
 
     @param login_id: A github user's login id
 
-    return: a set of all the lgoins of all the contributors to all repositories, including the github user him/herself provided the user contributed to atleast one repo
+    return: a list of the logins of all the contributors to REPO_LIMIT/all repositories, provided they are in the organization specified in ORGANIZATION_NAME
     """
 
-    # get user
-    member = g.get_user(login_id)
     #get member's repository objects
-    repo_objects = list(member.get_repos())
-    #get member's repos' names
-    repos = get_names_from_repos(repo_objects)
+    repos = list(member.get_repos())
 
     contributors = []
     temp = []
+    #iter_cnt = 0;
 
-    for repo_name in repos:
-        repo = g.get_repo(repo_name)
+    for repo in repos:
+        #if iter_cnt == REPO_LIMIT:
+        #    break
         temp = list(repo.get_contributors()) # getting contributor objects
-        contributors += get_logins_from_users(temp) # getting logins
+        #if(len(temp) <= CONTRIBUTOR_LIMIT):
+        contribs_in_org = list(set(temp).intersection(member_objects))
+        contributors += get_logins_from_users(contribs_in_org) # getting logins
+        #iter_cnt += 1
 
-    return set(contributors)
+    # converting it to a set knocks of all duplicates
+    return list(set(contributors))
 
 
 # Main method
@@ -81,40 +71,37 @@ if __name__ == "__main__":
     #getting organisation 'github'
     organization = g.get_organization(ORGANIZATION_NAME)
 
-    #getting members of github as a list of 'NamedUser' objects, with their logins
-    member_objects = list(organization.get_members())
+    #getting members of github as a list of 'NamedUser' objects.
+    members = list(organization.get_members())
 
-    #get the member's github login ids
-    members = get_logins_from_users(member_objects)
+    #list of lists with contributors from HubSpot to a repository of a HubSpot employee
+    all_contributors = []
 
-    #TODO; delete
-    #size of github comapny
-    print("Size: " + str(len(members)))
+    cnt=0 # this keeps track of how may users have been processed
+    for curr_mem in members:
+        cnt+=1
+        #get contributors' usernames
+        contributors = get_member_repos_contribs(curr_mem, members)
+        # remove the owner of the repo as a contributor
+        if curr_mem in contributors:
+            contributors.remove(curr_mem)
+        all_contributors.append(contributors)
+        print cnt
 
-    #TODO: get rid of this
-    #print all logins lines by line
-    for member in members:
-        print(member)
+    #temprorary
+    print all_contributors
 
-    #get contributors from all repos
-    contributors = get_member_repos_contribs(members[0])
+    #TODO:
 
-    #TODO: get rid of
-    for contrib in contributors:
-        print contrib
+    # get the member's github login ids
+    # usernames = get_logins_from_users(members)
 
-    #TODO: get rid of
-    if members[0] in contributors:
-        print("Yay!")
+    # Get some information about the user, like location or whatever and use color for those properties. Get number of followers and such (Look at bookmarks). Make methods for both functions and add tests if possible (make classes similar to Named User with attributes like loocation..)
 
-    # remove the owner of the repo as a contributor
-    if members[0] in contributors:
-        contributors.remove(members[0])
+    # make the graph using a function, passing in usernames, other properties (make a function for it maybe, passing in member objects) and all_contributors
 
+    # graph is a dicitonary with two arrays -> nodes (username, other properties) and links (source, target), using all_contributors.
 
-    workmate_contribs = list(contributors.intersection(members))
+    # add tests for the graph making function
 
-    for contrib in workmate_contribs:
-        print contrib
-
-    #TODO: add links between members[0] and workmate_contribs
+    # save graph to JSON file
