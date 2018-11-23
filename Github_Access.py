@@ -1,4 +1,5 @@
 from github import Github
+from time import sleep
 import sys
 
 # declaring my access token --> (given no permissions)
@@ -16,6 +17,9 @@ ORGANIZATION_NAME = "HubSpot"
 # number of repositories check per user. set to -1 for no limit
 #REPO_LIMIT = 45
 
+# amount you want to suspend programming time for. Should be set to 0 if aiming for no sleep
+SLEEP_VAL = 0
+
 
 # Get logins from a list of objects
 def get_logins_from_users(objects_list):
@@ -29,6 +33,7 @@ def get_logins_from_users(objects_list):
 
     logins = []
     for obj in objects_list:
+        sleep(SLEEP_VAL) #to avoid github API rate limit violation
         login_id = obj.login
         logins.append(login_id)
 
@@ -55,6 +60,7 @@ def get_member_repos_contribs(member, member_objects):
     for repo in repos:
         #if iter_cnt == REPO_LIMIT:
         #    break
+        sleep(SLEEP_VAL) #to avoid github API rate limit violation
         temp = list(repo.get_contributors()) # getting contributor objects
         #if(len(temp) <= CONTRIBUTOR_LIMIT):
         contribs_in_org = list(set(temp).intersection(member_objects))
@@ -79,13 +85,13 @@ if __name__ == "__main__":
 
     cnt=0 # this keeps track of how may users have been processed
     for curr_mem in members:
-        cnt+=1
         #get contributors' usernames
         contributors = get_member_repos_contribs(curr_mem, members)
         # remove the owner of the repo as a contributor
         if curr_mem in contributors:
             contributors.remove(curr_mem)
         all_contributors.append(contributors)
+        cnt+=1
         print cnt
 
     #temprorary
