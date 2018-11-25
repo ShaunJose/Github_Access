@@ -70,3 +70,17 @@ class Repository:
         """
 
         return self.contributors
+
+
+# used for testing followers
+class FollowedUser:
+
+    def __init__(self, followers):
+        self.followers = followers
+
+
+#used for testing locations
+class LocatedUser:
+
+    def __init__(self, location):
+        self.location = location

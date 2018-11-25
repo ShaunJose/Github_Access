@@ -33,7 +33,7 @@ Data, about them as well as their repositories, are gathered.
 ### Visualization (Plan for now):
 1. Nodes are employees of the organization.
 
-2. Color-coded nodes, based on location.
+2. Color-coded nodes, based on popularity (attribute based on number of followers).
 
 3. Links between nodes who have worked on the same repositories
 

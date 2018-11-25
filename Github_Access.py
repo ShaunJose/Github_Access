@@ -12,7 +12,7 @@ g = Github(ACCESS_TOKEN)
 ORGANIZATION_NAME = "HubSpot"
 
 # popularity segregation based on number of followers of a github user
-POPULARITY_BOUNDARIES = [100, 300, 500, 700, 900, 1100, 1300]
+POPULARITY_BOUNDARIES = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000]
 
 #max number of contributors for a repository
 #CONTRIBUTOR_LIMIT = 400
@@ -25,7 +25,7 @@ SLEEP_VAL = 0
 
 
 # Get logins from a list of objects
-def get_logins_from_users(objects_list):
+def get_logins_of_users(objects_list):
     """
     Get all the logins from a list of user objects.
 
@@ -67,7 +67,7 @@ def get_member_repos_contribs(member, member_objects):
         temp = list(repo.get_contributors()) # getting contributor objects
         #if(len(temp) <= CONTRIBUTOR_LIMIT):
         contribs_in_org = list(set(temp).intersection(member_objects))
-        contributors += get_logins_from_users(contribs_in_org) # getting logins
+        contributors += get_logins_of_users(contribs_in_org) # getting logins
         #iter_cnt += 1
 
     # converting it to a set knocks of all duplicates
@@ -85,6 +85,8 @@ def get_all_contributors_from_org(members):
     """
     all_contributors = []
 
+    print("Members done processing:")
+
     # getting connections and contributors for each member of the org
     cnt=0 # this keeps track of how may users have been processed
     for curr_mem in members:
@@ -95,9 +97,72 @@ def get_all_contributors_from_org(members):
             contributors.remove(curr_mem)
         all_contributors.append(contributors)
         cnt+=1
-        print cnt
+        print str(cnt) + "/" + str(len(members))
 
     return all_contributors
+
+
+# Get number of followers of users
+def get_num_of_followers(users):
+    """
+    Get the number of followers for each of the user
+
+    @param users: A list of github NamedUser objects
+
+    return: A list of corresponding number of followers per user
+    """
+
+    followers = []
+
+    for user in users:
+        followers.append(user.followers)
+
+    return followers
+
+
+# Get popularity of each user
+def get_popularity(followers, boundaries):
+    """
+    Get the popularity of each user, based on boundaries
+
+    @param followers: List of number of followers
+
+    @param boundaries: A list of integer boundaries which dictate popularity. This list must be in ascending order
+
+    return: A corresponding list of popularity from 0 to (len(boundaries) - 1), with 0 being lowest popularity
+    """
+
+    popularity = []
+
+    for num_foll in followers:
+        index = 0
+        for boundary in boundaries:
+            if num_foll < boundary:
+                popularity.append(index)
+                break
+            index += 1
+        if index == len(boundaries): #if followers not lower than any boundary
+            popularity.append(len(boundaries)) #append highest popularity!
+
+    return popularity
+
+
+#Get locations of github users
+def get_locations_of_users(users):
+    """
+    Get locations of github users.
+
+    @param users: List of github NamedUser objects
+
+    return: List of corresponding locations of users.
+    """
+
+    locations = []
+
+    for user in users:
+        locations.append(user.location)
+
+    return locations
 
 
 # Main method
@@ -112,22 +177,30 @@ if __name__ == "__main__":
     #get a list of lists with contributors from HubSpot to a repository of a HubSpot employee, except for the owner of the repository
     all_contributors = get_all_contributors_from_org(members)
 
-    #temprorary.
+    #temporary.
     print all_contributors
 
     #TODO:
 
     # get the members' github login ids
-    usernames = get_logins_from_users(members)
+    usernames = get_logins_of_users(members)
+    #temprorary
+    print usernames
 
     # get the members' number of followers
-    followers_count = get_followers_of_users(members)
+    followers_count = get_num_of_followers(members)
+    #temporary
+    print followers_count
 
-    # get the members' popularity base on followers_count
-    popularity = get_popularity(followers_count)
+    # get the members' popularity base on followers_count and POPULARITY_BOUNDARIES
+    popularity = get_popularity(followers_count, POPULARITY_BOUNDARIES)
+    #temporary
+    print popularity
 
     # get the members' locations
     locations = get_locations_of_users(members)
+    #temporary
+    print locations
 
     # get the members' github account creation date
     # created_at = get_account_creation_dates(members)

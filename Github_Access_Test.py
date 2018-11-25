@@ -1,6 +1,6 @@
 import pytest
 from Github_Access import *
-from Test_Classes import NamedUser, Repository # used to test methods in Github_Access.py
+from Test_Classes import NamedUser, Repository, FollowedUser, LocatedUser
 
 #attribute used for multiple tests
 EMPTY_SET = set()
@@ -23,7 +23,7 @@ def lists_equal(list_1, list_2):
         return False
 
 
-#Test above helper method
+#Testing lists_equal method
 def test__lists_equal():
 
     #empty list check
@@ -139,17 +139,39 @@ def test__NamedUser_And_Repostiory():
     assert set(result) - set(expected_result) == EMPTY_SET
 
 
+#testing FollowedUser attribute
+def test__FollowedUser():
+
+    users = [FollowedUser(0), FollowedUser(127), FollowedUser(54), FollowedUser(103), FollowedUser(307), FollowedUser(1450), FollowedUser(300000), FollowedUser(10)]
+
+    result = [users[0].followers, users[1].followers, users[2].followers, users[3].followers, users[4].followers, users[5].followers, users[6].followers, users[7].followers]
+    expected_result = [0, 127, 54, 103, 307, 1450, 300000, 10]
+
+    assert lists_equal(result, expected_result)
+
+
+#testing LocatedUser attribute
+def test__LocatedUser():
+
+    users = [LocatedUser("Kingston"), LocatedUser("Miami"), LocatedUser("Florida"), LocatedUser("Good ol' Dublin"), LocatedUser("Shank Village"), LocatedUser("Up high in the sky")]
+
+    result = [users[0].location, users[1].location, users[2].location, users[3].location, users[4].location, users[5].location, ]
+    expected_result = ["Kingston", "Miami", "Florida", "Good ol' Dublin", "Shank Village", "Up high in the sky"]
+
+    assert lists_equal(result, expected_result)
+
+
 ###########################################################################
 #Testing Github_Access.py methods
 
-#testing method get_logins_from_users
+#testing method get_logins_of_users
 def test__get_logins_from_users():
 
     # Normal and empty login Check
     user_object_list = [NamedUser("abc"), NamedUser("zzz"), NamedUser("Shaun"), NamedUser("a"), NamedUser("Z"), NamedUser("")]
 
     expected_logins = ["abc", "zzz", "Shaun", "a", "Z", ""]
-    received_logins = get_logins_from_users(user_object_list)
+    received_logins = get_logins_of_users(user_object_list)
 
     # Check if expected == result is True
     assert lists_equal(expected_logins, received_logins)
@@ -158,7 +180,7 @@ def test__get_logins_from_users():
     user_object_list = [NamedUser("abcd"), NamedUser("abcd"), NamedUser("Joseph"), NamedUser("abcd")]
 
     expected_logins = ["abcd", "abcd", "Joseph", "abcd"]
-    received_logins = get_logins_from_users(user_object_list)
+    received_logins = get_logins_of_users(user_object_list)
 
     # Check if expected == result is True
     assert lists_equal(expected_logins, received_logins)
@@ -227,3 +249,39 @@ def test__get_all_contributors_from_org():
     for list in result:
         assert set(list) - set(expected_result[index]) == EMPTY_SET
         index += 1
+
+
+#testing get_num_of_followers
+def test__get_num_of_followers():
+
+    users = [FollowedUser(0), FollowedUser(127), FollowedUser(54), FollowedUser(103), FollowedUser(307), FollowedUser(1450), FollowedUser(300000), FollowedUser(10)]
+
+    result = get_num_of_followers(users)
+    expected_result = [0, 127, 54, 103, 307, 1450, 300000, 10]
+
+    assert lists_equal(result, expected_result)
+
+
+#testing get_popularity
+def test__get_popularity():
+
+    followers = [0, 127, 54, 103, 307, 1450, 300000, 10]
+
+    #setting up boundaries for popularity
+    boundaries = [10, 100, 1000, 100000]
+
+    result = get_popularity(followers, boundaries)
+    expected_result = [0, 2, 1, 2, 2, 3, 4, 1]
+
+    assert lists_equal(result, expected_result)
+
+
+#testing get_locations_of_users
+def test__get_locations_of_users():
+
+    users = [LocatedUser("Kingston"), LocatedUser("Miami"), LocatedUser("Florida"), LocatedUser("Good ol' Dublin"), LocatedUser("Shank Village"), LocatedUser("Up high in the sky")]
+
+    result = get_locations_of_users(users)
+    expected_result = ["Kingston", "Miami", "Florida", "Good ol' Dublin", "Shank Village", "Up high in the sky"]
+
+    assert lists_equal(result, expected_result)
