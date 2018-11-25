@@ -8,8 +8,11 @@ ACCESS_TOKEN = "1f24b75e991ab17fa02a3bb1df8dec255e77fbd6"
 # creating github instance using token
 g = Github(ACCESS_TOKEN)
 
-#organisation that's being targetted here
+# organisation that's being targetted here
 ORGANIZATION_NAME = "HubSpot"
+
+# popularity segregation based on number of followers of a github user
+POPULARITY_BOUNDARIES = [100, 300, 500, 700, 900, 1100, 1300]
 
 #max number of contributors for a repository
 #CONTRIBUTOR_LIMIT = 400
@@ -83,6 +86,7 @@ if __name__ == "__main__":
     #list of lists with contributors from HubSpot to a repository of a HubSpot employee
     all_contributors = []
 
+    # getting connections and contributors for each member of the org
     cnt=0 # this keeps track of how may users have been processed
     for curr_mem in members:
         #get contributors' usernames
@@ -94,15 +98,29 @@ if __name__ == "__main__":
         cnt+=1
         print cnt
 
-    #temprorary
+    #temprorary.
     print all_contributors
 
     #TODO:
 
-    # get the member's github login ids
-    # usernames = get_logins_from_users(members)
+    # get the members' github login ids
+    usernames = get_logins_from_users(members)
+
+    # get the members' number of followers
+    followers_count = get_followers_of_users(members)
+
+    # get the members' popularity base on followers_count
+    popularity = get_popularity(POPULARITY, followers_count)
+
+    # get the members' locations
+    locations = get_locations_of_users(members)
+
+    # get the members' github account creation date
+    # created_at = get_account_creation_dates(members)
 
     # Get some information about the user, like location or whatever and use color for those properties. Get number of followers and such (Look at bookmarks). Make methods for both functions and add tests if possible (make classes similar to Named User with attributes like loocation..)
+
+    # Maybe modularize getting contributors --> remember that this means adding tests
 
     # make the graph using a function, passing in usernames, other properties (make a function for it maybe, passing in member objects) and all_contributors
 

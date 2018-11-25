@@ -45,7 +45,7 @@ Analyzing a "big" organization (i.e. an organization with lots of members on git
 
 2. Another constant CONTRIBUTOR_LIMIT, analyzes only those repositories that have a number of contributors not more than CONTRIBUTOR_LIMIT.
 
-3. The last constant is the most successful, to tackle this problem single-handedly, in the simplest way. SLEEP_VAL is the amount of seconds you want the program to do nothing for. As can been seen in the program, this is added before every statement of git API calls in a loop, and this can help as it reduces the number of git calls per second, as the program just stalls for SLEEP_VAL seconds. Increasing SLEEP_VAL would make the program slower, but would ensure that the API limit won't been reached. This should be set to 0 if no sleep is wanted (i.e. in case of HubSpot)
+3. The last constant has been the most successful, in tackling this problem single-handedly, in the simplest way. SLEEP_VAL is the amount of seconds you want the program to do nothing for. As can been seen in the program, this is added before every statement of git API calls in a loop, and this can help as it reduces the number of git calls per second, as the program just stalls for SLEEP_VAL seconds. Increasing SLEEP_VAL would make the program slower, but would ensure that the API limit won't been reached. This should be set to 0 if no sleep is wanted (i.e. in case of HubSpot)
 
 The conditional statements using the first two constants stated above are only attempts at providing a fix for analyzing large companies. My code works for companies that are not too large on github, like 'HubSpot', and thus, these variables and their uses have been commented out.
 
