@@ -30,21 +30,19 @@ def test__NamedUser_And_Repostiory():
     repos = [Repository(user, "World"), Repository(users[0], "Wine"), Repository(user, "Einstein"), Repository(user, "Flesh")]
 
     # LOGIN NAME TESTING:
-    assert users[0].login == ""
-    assert users[1].login == "Soulja_Boy"
-    assert users[2].login == "Fresh Prince"
+    result = [users[0].login, users[1].login, users[2].login]
+    expected_result = ["", "Soulja_Boy", "Fresh Prince"]
+    assert listsEqual(result, expected_result)
 
     # REPO OWNER TESTING:
-    assert repos[0].owner == user
-    assert repos[1].owner == users[0]
-    assert repos[2].owner == user
-    assert repos[3].owner == user
+    result = [repos[0].owner, repos[1].owner, repos[2].owner, repos[3].owner]
+    expected_result = [user, users[0], user, user]
+    assert listsEqual(result, expected_result)
 
     # REPO FULL_NAME TESTING:
-    assert repos[0].full_name == "Soulja_Boy/World"
-    assert repos[1].full_name == "/Wine"
-    assert repos[2].full_name == "Soulja_Boy/Einstein"
-    assert repos[3].full_name == "Soulja_Boy/Flesh"
+    result = [repos[0].full_name, repos[1].full_name, repos[2].full_name, repos[3].full_name]
+    expected_result = ["Soulja_Boy/World", "/Wine", "Soulja_Boy/Einstein", "Soulja_Boy/Flesh"]
+    assert listsEqual(result, expected_result)
 
     # REPO TESTING:
     #setting repos once
