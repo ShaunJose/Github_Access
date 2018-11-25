@@ -74,16 +74,15 @@ def get_member_repos_contribs(member, member_objects):
     return list(set(contributors))
 
 
-# Main method
-if __name__ == "__main__":
+# Get contributors from the organization
+def get_all_contributors_from_org(members):
+    """
+    Gets contributors' logins of REPO_LIMIT/all organization employees repos
 
-    #getting organisation 'github'
-    organization = g.get_organization(ORGANIZATION_NAME)
+    @param members: A list of member objects of the organization
 
-    #getting members of github as a list of 'NamedUser' objects.
-    members = list(organization.get_members())
-
-    #list of lists with contributors from HubSpot to a repository of a HubSpot employee
+    return: A list of the login ids of CONTRIBUTOR_LIMIT/all contributors to each member's repositories (all of them or constrained by REPO_LIMIT), except for the owner of the repo himself/herself.
+    """
     all_contributors = []
 
     # getting connections and contributors for each member of the org
@@ -98,6 +97,21 @@ if __name__ == "__main__":
         cnt+=1
         print cnt
 
+    return all_contributors
+
+
+# Main method
+if __name__ == "__main__":
+
+    #getting organisation 'github'
+    organization = g.get_organization(ORGANIZATION_NAME)
+
+    #getting members of github as a list of 'NamedUser' objects.
+    members = list(organization.get_members())
+
+    #get a list of lists with contributors from HubSpot to a repository of a HubSpot employee, except for the owner of the repository
+    all_contributors = get_all_contributors_from_org(members)
+
     #temprorary.
     print all_contributors
 
@@ -110,7 +124,7 @@ if __name__ == "__main__":
     followers_count = get_followers_of_users(members)
 
     # get the members' popularity base on followers_count
-    popularity = get_popularity(POPULARITY, followers_count)
+    popularity = get_popularity(followers_count)
 
     # get the members' locations
     locations = get_locations_of_users(members)

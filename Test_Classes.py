@@ -7,8 +7,9 @@ class NamedUser:
         self.login = login
         self.repos = [] # list of Repository objects
 
-    # set repositories for a user
-    def set_repos(self, repos):
+    # add repositories for a user
+    # This method adds repositoires to the already exisitng list of repos
+    def add_repos(self, repos):
         """
         Sets repos of a particular user
 
@@ -45,7 +46,7 @@ class Repository:
 
     # takes a list of NamedUser objects as contributors
     # This methods adds contributors, to the already existing contributors list
-    def set_contributors(self, contributors):
+    def add_contributors(self, contributors):
         """
         Adds contributors of a repository
 

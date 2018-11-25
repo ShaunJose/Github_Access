@@ -15,6 +15,10 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
    Install: pip install -U pytest*
 
 
+### Testing:
+Testing is done using "dummy classes" in 'Test Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
+
+
 ### Idea behind Project:
 Who are the employees in the organization that work together on outside projects or help each other with personal projects?
 Representing connections between employees of any organization who have worked together on personal or non-organization-owned repositories
