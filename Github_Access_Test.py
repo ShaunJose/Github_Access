@@ -1,3 +1,4 @@
+import sys
 import pytest
 from Github_Access import *
 from Test_Classes import NamedUser, Repository, FollowedUser, LocatedUser
@@ -254,6 +255,15 @@ def test__get_all_contributors_from_org():
 #testing get_num_of_followers
 def test__get_num_of_followers():
 
+    #Empty users test
+    users = []
+
+    result = get_num_of_followers(users)
+    expected_result = []
+
+    assert lists_equal(result, expected_result)
+
+    #Normal Test
     users = [FollowedUser(0), FollowedUser(127), FollowedUser(54), FollowedUser(103), FollowedUser(307), FollowedUser(1450), FollowedUser(300000), FollowedUser(10)]
 
     result = get_num_of_followers(users)
@@ -264,6 +274,37 @@ def test__get_num_of_followers():
 
 #testing get_popularity
 def test__get_popularity():
+
+    #Empty followers and boundaries test
+    followers = []
+    boundaries = []
+
+    result = get_popularity(followers, boundaries)
+    expected_result = []
+
+    assert lists_equal(result, expected_result)
+
+    #Empty followers test
+    followers = []
+    boundaries = [7,12,24,2423,423432]
+
+    result = get_popularity(followers, boundaries)
+    expected_result = []
+
+    assert lists_equal(result, expected_result)
+
+    #Empty boundaries test
+    followers = [7, 32, 423, 4, 523, 3, 5, 324, 353]
+    boundaries = []
+
+    result = get_popularity(followers, boundaries)
+    expected_result = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    assert lists_equal(result, expected_result)
+
+    #Normal Test
+    result = get_popularity(followers, boundaries)
+    expected_result = [0, 2, 1, 2, 2, 3, 4, 1]
 
     followers = [0, 127, 54, 103, 307, 1450, 300000, 10]
 
@@ -279,9 +320,96 @@ def test__get_popularity():
 #testing get_locations_of_users
 def test__get_locations_of_users():
 
+    #Empty users test
+    users = []
+
+    result = get_logins_of_users(users)
+    expected_result = []
+
+    assert lists_equal(result, expected_result)
+
+    #Normal Test
     users = [LocatedUser("Kingston"), LocatedUser("Miami"), LocatedUser("Florida"), LocatedUser("Good ol' Dublin"), LocatedUser("Shank Village"), LocatedUser("Up high in the sky")]
 
     result = get_locations_of_users(users)
     expected_result = ["Kingston", "Miami", "Florida", "Good ol' Dublin", "Shank Village", "Up high in the sky"]
 
     assert lists_equal(result, expected_result)
+
+
+#testing create_graph
+def test__create_graph():
+    #NOTE: First four param arrays have to have the same length!
+
+    #Empty parameters test
+    usernames = []
+    followers = []
+    popularity = []
+    locations = []
+    connections = [[]]
+
+    result = create_graph(usernames, followers, popularity, locations, connections)
+    expected_result = { "nodes": [], "links": []}
+
+    assert lists_equal(result["nodes"], expected_result["nodes"])
+    assert lists_equal(result["links"], expected_result["links"])
+
+    #Normal parameters test
+    usernames = ["Shaun", "Harry", "Susan", "Ron", "Pete", "Jan"]
+    followers = [101, 201, 301, 401, 501, 601]
+    popularity = [1, 2, 3, 4, 5, 6]
+    locations = ["Dublin", "Boston", "Mumbai", "Sweet Cali", "Vegas", "Copenhagen"]
+    connections = [ ["Harry", "Jan"], ["Susan", "Ron", "Shaun"], ["Jan", "Pete", "Harry"], ["Shaun", "Pete"], [], ["Susan"] ]
+
+    result = create_graph(usernames, followers, popularity, locations, connections)
+    expected_result = { "nodes" :
+                        [ { "username": "Shaun",
+                            "followers": 101,
+                            "popularity": 1,
+                            "location": "Dublin"},
+                          { "username": "Harry",
+                            "followers": 201,
+                            "popularity": 2,
+                            "location": "Boston"},
+                          { "username": "Susan",
+                            "followers": 301,
+                            "popularity": 3,
+                            "location": "Mumbai"},
+                          { "username": "Ron",
+                            "followers": 401,
+                            "popularity": 4,
+                            "location": "Sweet Cali"},
+                          { "username": "Pete",
+                            "followers": 501,
+                            "popularity": 5,
+                            "location": "Vegas"},
+                          { "username": "Jan",
+                            "followers": 601,
+                            "popularity": 6,
+                            "location": "Copenhagen"}],
+                        "links" :
+                        [ { "source" : "Shaun",
+                            "target" : "Harry"},
+                          { "source" : "Shaun",
+                            "target" : "Jan"},
+                          { "source" : "Harry",
+                            "target" : "Susan"},
+                          { "source" : "Harry",
+                            "target" : "Ron"},
+                          { "source" : "Harry",
+                            "target" : "Shaun"},
+                          { "source" : "Susan",
+                            "target" : "Jan"},
+                          { "source" : "Susan",
+                            "target" : "Pete"},
+                          { "source" : "Susan",
+                            "target" : "Harry"},
+                          { "source" : "Ron",
+                            "target" : "Shaun"},
+                          { "source" : "Ron",
+                            "target" : "Pete"},
+                          { "source" : "Jan",
+                            "target" : "Susan"} ] }
+
+    assert lists_equal(result["nodes"], expected_result["nodes"])
+    assert lists_equal(result["links"], expected_result["links"])

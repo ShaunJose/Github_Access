@@ -1,6 +1,7 @@
+import sys
 from github import Github
 from time import sleep
-import sys
+import json
 
 # declaring my access token --> (given no permissions)
 ACCESS_TOKEN = "1f24b75e991ab17fa02a3bb1df8dec255e77fbd6"
@@ -115,6 +116,7 @@ def get_num_of_followers(users):
     followers = []
 
     for user in users:
+        sleep(SLEEP_VAL)
         followers.append(user.followers)
 
     return followers
@@ -160,12 +162,60 @@ def get_locations_of_users(users):
     locations = []
 
     for user in users:
+        sleep(SLEEP_VAL)
         locations.append(user.location)
 
     return locations
 
 
-# Main method
+#Create graph with the information given in params, in format
+def create_graph(usernames, followers, popularity, locations, connections):
+    """
+    Creates a graph, displaying information about github users in a well-formatted way.
+
+    @param usernames: List of usernames of github users
+
+    @param followers: List of corresponding number of followers per user
+
+    @param popularity: List of correspinging level of popularity per user
+
+    @param locations: List of correspinging location of each user
+
+    @param connections: List of contributors for each repository
+
+    return: A dicitonary with two arrays -> nodes, containting dictionaries with attributes (username, number of followers, popularity, location) and links, containg dictionaries with attributes (source, target), using connections.
+
+    Do note that, if the length of all lists are not the same, this method will break, which won't happen when passing information fetched straight from the Github API.
+    """
+
+    #dictionary with two empty arrays
+    graph = { "nodes": [], "links": [] }
+
+    #loop limit
+    max = len(usernames)
+
+    #populate nodes array appropriately
+    for index in range(max):
+        node_elem = {}
+        node_elem["username"] = usernames[index]
+        node_elem["followers"] = followers[index]
+        node_elem["popularity"] = popularity[index]
+        node_elem["location"] = locations[index]
+        graph["nodes"].append(node_elem)
+
+    #populate links array appropriately
+    for index in range(max):
+        curr_user = usernames[index]
+        conn_arr = connections[index]
+        for curr_conn in conn_arr:
+            link_elem = { "source": curr_user,
+                          "target": curr_conn }
+            graph["links"].append(link_elem)
+
+    return graph
+
+
+# Main method --> Keep it small :)
 if __name__ == "__main__":
 
     #getting organisation 'github'
@@ -177,42 +227,22 @@ if __name__ == "__main__":
     #get a list of lists with contributors from HubSpot to a repository of a HubSpot employee, except for the owner of the repository
     all_contributors = get_all_contributors_from_org(members)
 
-    #temporary.
-    print all_contributors
-
-    #TODO:
-
     # get the members' github login ids
     usernames = get_logins_of_users(members)
-    #temprorary
-    print usernames
 
     # get the members' number of followers
     followers_count = get_num_of_followers(members)
-    #temporary
-    print followers_count
 
     # get the members' popularity base on followers_count and POPULARITY_BOUNDARIES
     popularity = get_popularity(followers_count, POPULARITY_BOUNDARIES)
-    #temporary
-    print popularity
 
     # get the members' locations
     locations = get_locations_of_users(members)
-    #temporary
-    print locations
 
-    # get the members' github account creation date
-    # created_at = get_account_creation_dates(members)
+    graph = create_graph(usernames, followers_count, popularity, locations, all_contributors)
 
-    # Get some information about the user, like location or whatever and use color for those properties. Get number of followers and such (Look at bookmarks). Make methods for both functions and add tests if possible (make classes similar to Named User with attributes like loocation..)
+    #write graph to JSON file
+    with open('data.json', 'w') as outfile:
+        json.dump(graph, outfile)
 
-    # Maybe modularize getting contributors --> remember that this means adding tests
-
-    # make the graph using a function, passing in usernames, other properties (make a function for it maybe, passing in member objects) and all_contributors
-
-    # graph is a dicitonary with two arrays -> nodes (username, other properties) and links (source, target), using all_contributors.
-
-    # add tests for the graph making function
-
-    # save graph to JSON file
+    print("'data.JSON' created")

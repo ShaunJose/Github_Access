@@ -1,4 +1,6 @@
-# files of classes used for testing methods
+# file of classes used for testing methods
+
+import sys
 
 # used for testing logins and contibutors
 class NamedUser:

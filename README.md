@@ -16,7 +16,7 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 
 
 ### Testing:
-Testing is done using "dummy classes" in 'Test Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
+Testing is done using "dummy classes" in 'Test_Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
 
 
 ### Idea behind Project:
@@ -53,4 +53,6 @@ Analyzing a "big" organization (i.e. an organization with lots of members on git
 
 The conditional statements using the first two constants stated above are only attempts at providing a fix for analyzing large companies. My code works for companies that are not too large on github, like 'HubSpot', and thus, these variables and their uses have been commented out.
 
-However, if large companies are targetted, my code does work with an appropriate SLEEP_VAL (who's usage is not commented out), for example, SLEEP_VAL = 0.5 if ORGANIZATION_NAME = "Github". DO NOTE that this may take a very long time!!
+However, if large companies are targeted, my code does work with an appropriate SLEEP_VAL (who's usage is not commented out), for example, SLEEP_VAL = 0.5 if ORGANIZATION_NAME = "Github". DO NOTE that this may take a very long time!!
+
+Note that running the program multiple times without reasonably wide breaks in between might also result in violating the API rate limit
