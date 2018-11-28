@@ -19,13 +19,22 @@
 <body>
 
 <!-- create a canvas -->
-<canvas id="graph" width="500" height="500"></canvas>
+<canvas id="graph" width="0" height="0" style="border: 2px solid black;"> </canvas>
 
 <!-- import d3.v5..min.js -->
 <script src = "https://d3js.org/d3.v5.min.js"> </script>
 
 <!-- do the real stuff -->
 <script>
+
+//setting width of information bar and height gap for formatting
+var info_width = 500;
+var height_border = 100;
+
+//set up width and height for the canvas declared before
+var canvas = document.getElementById("graph");
+canvas.width = window.innerWidth - info_width;
+canvas.height = window.innerHeight - height_border;
 
 //making dummy graph
 var graph = {
