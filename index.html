@@ -18,8 +18,14 @@
 
 <body>
 
-<!-- create a canvas -->
+<!-- create a canvas for the graph -->
 <canvas id="graph" width="0" height="0" style="border: 2px solid black;"> </canvas>
+
+<!--Create spacing element. Used for spacing b/w graph and info -->
+<canvas id="spacing" width="0" height="0"></canvas>
+
+<!-- create a canvas for the user's information -->
+<canvas id="info" width="0" height="0" style="border: 2px solid black;"> </canvas>
 
 <!-- import d3.v5..min.js -->
 <script src = "https://d3js.org/d3.v5.min.js"> </script>
@@ -27,14 +33,33 @@
 <!-- do the real stuff -->
 <script>
 
+//CONSTANTS DECLARATION
 //setting width of information bar and height gap for formatting
-var info_width = 500;
-var height_border = 100;
+var INFO_WIDTH = 500;
+var INFO_HEIGHT = 400;
+var X_BORDER = 100;
+var Y_BORDER = 100;
+var REPEL_FORCE = -300; //force with which nodes repel (for spacing)
 
-//set up width and height for the canvas declared before
-var canvas = document.getElementById("graph");
-canvas.width = window.innerWidth - info_width;
-canvas.height = window.innerHeight - height_border;
+//set up width and height for the graph canvas declared before
+canvas = document.getElementById("graph");
+canvas.width = window.innerWidth - (INFO_WIDTH + X_BORDER);
+canvas.height = window.innerHeight - Y_BORDER;
+
+//set up width for the spacing canvas declared before
+var canvas = document.getElementById("spacing");
+canvas.width = X_BORDER - 50; //to allow space for info canvas as well
+
+//set up width and height for the info canvas declared before
+var canvas = document.getElementById("info");
+canvas.width = INFO_WIDTH;
+canvas.height = INFO_HEIGHT;
+
+//put heading in Information
+var context = canvas.getContext("2d");
+context.font = "small-caps 30px Courier"
+context.fillStyle = "blue"
+context.fillText("User Information:", 25, 25,);
 
 //making dummy graph
 var graph = {
@@ -65,29 +90,50 @@ var graph = {
 };
 
 
-//create the container where you're drawing your network, and declare attributes
+//create the container (canvas) where you're drawing your network, and declare attributes
 var container = d3.select("#graph");
 var height = container.attr("height");
 var width = container.attr("width");
 var radius = 5;
-var context = container.node().getContext("2d");//TODO: WEBGL WORKS?
+context = container.node().getContext("2d");//TODO: WEBGL WORKS?
+
+//create simulation object
+var sim = d3.forceSimulation();
+
+//do cool stuff with simulation
+sim.nodes(graph.nodes); //perform a simulation on our nodes
+sim.force("y", d3.forceY(height/2)); //put nodes in the center of container horizontally
+sim.force("x", d3.forceX(width/2)); //put nodes in the center of container vertically
+sim.force("collide", d3.forceCollide(radius)); //nodes don't overlap
+sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
+sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
 
 //make random positions for graph nodes
-graph.nodes.forEach( function (node){
-    node.x = Math.random() * width;
-    node.y = Math.random() * height;
-});
+// graph.nodes.forEach( function (node){
+//     node.x = Math.random() * width;
+//     node.y = Math.random() * height;
+// });
 
+/**
+  * Draws the graph's nodes and edges
+  *
+  **/
 function drawGraph(){
 
     context.clearRect(0, 0, width, height);
 
     //draw each node
     context.beginPath(); //signal that we're drawing stuff
-    graph.nodes.forEach(drawNode);
+    graph.nodes.forEach(drawNode); //draw all nodes
     context.fill(); //actually display stuff that's been created
 }
 
+
+/**
+  * Draws a node
+  *
+  * @param node: a node element (one user)
+  **/
 function drawNode(node){
 
     //set context on node
@@ -95,9 +141,6 @@ function drawNode(node){
     //draw the node as a circle
     context.arc(node.x, node.y, radius, 0, Math.PI * 2);
 }
-
-//draw the graph :D
-drawGraph();
 
 </script>
 
