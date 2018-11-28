@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- Network/Graph Visualizations (SEE README.md)-->
+
+<html lang = "en">
+<head>
+
+    <title> d3 Network Visualizations </title>
+
+    <!-- meta info -->
+    <meta charset="uft-8">
+    <meta name = "description" content = "Network Visualizations (see README)">
+    <meta name = "author" content = "Shaun Jose">
+
+    <!-- refresh document every 10 minutes -->
+    <meta http-equiv="refresh" content="3000 ">
+
+</head>
+
+<body>
+
+<!-- create a canvas -->
+<canvas id="graph" width="500" height="500"></canvas>
+
+<!-- import d3.v5..min.js -->
+<script src = "https://d3js.org/d3.v5.min.js"> </script>
+
+<!-- do the real stuff -->
+<script>
+
+//create "constants"
+var WIDTH = "500";
+var HEIGHT = "500";
+
+//making dummy graph
+var graph = {
+    nodes: [ {
+        username: "One",
+        popularity: 1,
+        followers: 100,
+        location: "Boston"
+    },
+    {
+        username: "Two",
+        popularity: 2,
+        followers: 200,
+        location: "LA"
+    },
+    {
+        username: "Three",
+        popularity: 3,
+        followers: 300,
+        location: "Malaysia"
+    },
+    {
+        username: "Four",
+        popularity: 4,
+        followers: 400,
+        location: "Vegas"
+    } ]
+};
+
+
+//create the container where you're drawing your network, and declare attributes
+var container = d3.select("#graph");
+var height = container.attr("height");
+var width = container.attr("width");
+var radius = 5;
+var context = container.node().getContext("2d");//TODO: WEBGL WORKS?
+
+//make random positions for graph nodes
+graph.nodes.forEach( function (node){
+    node.x = Math.random() * width;
+    node.y = Math.random() * height;
+});
+
+function drawGraph(){
+
+    context.clearRect(0, 0, width, height);
+
+    //draw each node
+    context.beginPath(); //signal that we're drawing stuff
+    graph.nodes.forEach(drawNode);
+    context.fill(); //actually display stuff that's been created
+}
+
+function drawNode(node){
+
+    //set context on node
+    context.moveTo(node.x, node.y);
+    //draw the node as a circle
+    context.arc(node.x, node.y, radius, 0, Math.PI * 2);
+}
+
+//draw the graph :D
+drawGraph();
+
+</script>
+
+</body>
+
+</html>
