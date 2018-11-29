@@ -162,6 +162,7 @@ function dragended() {
   d3.event.subject.fy = null;
 }
 
+
 /**
   * Displays a node's information on the information canvas
   *
@@ -191,6 +192,14 @@ function displayInfo(node)
 }
 
 
+/**
+  * Displays the people from the organization that an employee (github user)  has worked with
+  *
+  * @param name: Username of the github user (employee)
+  * @param x: x positioning of text
+  * @param y: y positioning of text
+  * @param y_spacing: space between each contributor
+  **/
 function displayOrgContribs(name, x, y, y_spacing)
 {
     info_context.fillStyle = "Teal"; //Rebecca Purple, Teal
@@ -205,7 +214,7 @@ function displayOrgContribs(name, x, y, y_spacing)
         if(source == name || target == name)
         {
             var contrib = source != name? source : target;
-            if(contrib != name && (!encountered.includes(contrib))) //if it's not the same person, or if we have encoutnered the person before
+            if(contrib != name && (!encountered.includes(contrib))) //if it's not the same person, or if we have encountered the person before
             {
                 no_contribs = false;
                 info_context.fillText(contrib, x, y);
@@ -238,6 +247,7 @@ function drawNode(node){
     //actually display stuff that's been created
     context.fill();
 }
+
 
 /**
   * Draws a link from a source node to a target node
