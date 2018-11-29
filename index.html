@@ -38,11 +38,13 @@
 
 //CONSTANTS DECLARATION
 //setting width of information bar and height gap for formatting
-var INFO_WIDTH = 500;
-var INFO_HEIGHT = 400;
+var INFO_WIDTH = 350;
+var INFO_HEIGHT = 480;
 var X_BORDER = 100;
 var Y_BORDER = 100;
 var REPEL_FORCE = -300; //force with which nodes repel (for spacing)
+var INFO_COLOURS = ["red", "green", "purple", "turquoise"];
+var INFO_ATTR = ["Userame: ", "Followers: ", "Popularity: ", "Location: "];
 
 //set up width and height for the graph canvas declared before
 var canvas = document.getElementById("graph");
@@ -54,16 +56,18 @@ canvas = document.getElementById("spacing");
 canvas.width = X_BORDER - (X_BORDER/2); //to allow space for info canvas as well
 
 //set up width and height for the info canvas declared before
-canvas = document.getElementById("info");
+canvas = document.getElementById("info"); //used later as well!
 canvas.width = INFO_WIDTH;
 canvas.height = INFO_HEIGHT;
 
 //put heading in Information
-var context = canvas.getContext("2d");
-context.font = "small-caps 30px Courier"
-context.fillStyle = "blue"
-context.fillText("User Information:", 25, 25,);
+var info_context = canvas.getContext("2d"); //used later as well!
+info_context.font = "small-caps 30px Courier";
+info_context.fillStyle = "blue";
+info_context.fillText("User Information:", 25, 25,);
 
+//changing font for later
+info_context.font = "16px Arial";
 
 //create the container (canvas) where you're drawing your network, and declare attributes
 var container = d3.select("#graph");
@@ -71,7 +75,8 @@ var height = container.attr("height");
 var width = container.attr("width");
 var radius = 5;
 var colour = d3.scaleOrdinal(d3.schemeCategory10); //used for colouring nodes
-context = container.node().getContext("2d");//TODO: WEBGL WORKS?
+var context = container.node().getContext("2d");
+var graph; //
 
 //create simulation object
 var sim = d3.forceSimulation();
@@ -84,12 +89,15 @@ sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
 sim.force("linkForce", d3.forceLink().id(function (node) { return node.username; } )); //create a link force, and look at username to find source and target nodes
 
 //loading in data grabbed from Github_Access.py, using jquery on data.JSON
-$.getJSON("data.json", function (graph) {
+$.getJSON("data.json", function (data) {
+
+    graph = data;
 
     sim.nodes(graph.nodes); //perform a simulation on our nodes
     sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
     sim.force("linkForce").links(graph.links); //assign the linkForce to graph.links.
 
+    //drag functionality
     container
       .call(d3.drag()
           .container(container.node())
@@ -132,13 +140,19 @@ function dragstarted() {
   if (!d3.event.active) sim.alphaTarget(0.3).restart();
   d3.event.subject.fx = d3.event.subject.x;
   d3.event.subject.fy = d3.event.subject.y;
-    force.start()
 }
 
 //Source: Mike bostock's function
 function dragged() {
+
   d3.event.subject.fx = d3.event.x;
   d3.event.subject.fy = d3.event.y;
+
+  //display information on the info canvas
+  var node = d3.event.subject;
+
+  //display user information
+  displayInfo(d3.event.subject);
 }
 
 //Source: Mike bostock's function
@@ -148,6 +162,63 @@ function dragended() {
   d3.event.subject.fy = null;
 }
 
+/**
+  * Displays a node's information on the information canvas
+  *
+  * @param node: The node begin dragged by the user
+  **/
+function displayInfo(node)
+{
+    //clear the previous infomartion displayed
+    info_context.clearRect(25, 30, canvas.width - 30, canvas.height - 25);
+
+    //display user iinformation
+    var location = node.location;
+    if(location == null)
+        location = "Unknown";
+    var attr = [node.username, node.followers, node.popularity, location];
+    var x_pos = 25, y_pos = 80;
+    var y_spacing = 30;
+    for(i = 0; i < INFO_ATTR.length; i++)
+    {
+        info_context.fillStyle = INFO_COLOURS[i];
+        info_context.fillText(INFO_ATTR[i] + attr[i], x_pos, y_pos);
+        y_pos += y_spacing;
+    }
+
+    //display the workers from the organisation the user has worked with
+    displayOrgContribs(node.username, x_pos, y_pos, 20);
+}
+
+
+function displayOrgContribs(name, x, y, y_spacing)
+{
+    info_context.fillStyle = "Teal"; //Rebecca Purple, Teal
+    info_context.fillText("Worked with: ", x, y);
+    x += 100;
+    var no_contribs = true;
+    var encountered = [];
+    for(i = 0; i < graph.links.length; i++)
+    {
+        var source = graph.links[i].source.username;
+        var target = graph.links[i].target.username;
+        if(source == name || target == name)
+        {
+            var contrib = source != name? source : target;
+            if(contrib != name && (!encountered.includes(contrib))) //if it's not the same person, or if we have encoutnered the person before
+            {
+                no_contribs = false;
+                info_context.fillText(contrib, x, y);
+                y += y_spacing;
+                encountered.push(contrib)
+            }
+        }
+    }
+    //if employee has no connections with coworkers
+    if(no_contribs)
+     info_context.fillText("Nobody from the organization", x, y);
+
+}
 
 
 /**

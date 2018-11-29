@@ -41,14 +41,14 @@ All the members who work at the organization, and recorded on github.com, are ga
 Data, about them as well as their repositories, are gathered.
 
 
-### Visualization (Plan for now):
+### Visualization:
 1. Nodes are employees of the organization.
 
 2. Color-coded nodes, based on popularity (attribute based on number of followers).
 
 3. Links between nodes who have worked on the same repositories
 
-4. Clicking on the node displays employee's information
+4. Dragging a node displays the node's (employee's) information
 
 
 ### Limitations:
@@ -96,10 +96,10 @@ Terminal: **python Github_Access.py**
 
   IMPORTANT:
 4. Open index.html to see visualizations. (Tricky).
-   - Double clicking on index.html won't work, as it doesn't grab data from an http server, and not locally. In other words, the url from where the data is being read (in this case, it's the url of the data.json file), has to start with "http://" rather than "file://", as you cannot make an AJAX call to a local resource (GET request needs http url).
+   - Double clicking on index.html won't work, as it doesn't grab data from an http server, but locally. In other words, the url from where the data is being read (in this case, it's the url of the data.json file), has to start with "http://" rather than "file://", as you cannot make an AJAX call to a local resource (GET request needs http url).
 
-   - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the call to the localhost.
+   - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the http resource.
 
-   - To run index.html, open terminal, type in command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+   - To run index.html, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
