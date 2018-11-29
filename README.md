@@ -16,7 +16,7 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 2. Pytest.
    Install: **pip install -U pytest**
 
-3. http-server (on command line, to open up and http-server) (IMPORTANT)
+3. http-server (on command line, to open up an http-server) (IMPORTANT)
    Install: **npm install http-server -g** OR **brew install http-server -g**
 
 4. d3.js.
