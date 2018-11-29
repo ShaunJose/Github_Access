@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- Network/Graph Visualizations (SEE README.md)-->
+<!-- Used mike bostock's functions for dragging functionality -->
 
 <html lang = "en">
 <head>
@@ -44,16 +45,16 @@ var Y_BORDER = 100;
 var REPEL_FORCE = -300; //force with which nodes repel (for spacing)
 
 //set up width and height for the graph canvas declared before
-canvas = document.getElementById("graph");
+var canvas = document.getElementById("graph");
 canvas.width = window.innerWidth - (INFO_WIDTH + X_BORDER);
 canvas.height = window.innerHeight - Y_BORDER;
 
 //set up width for the spacing canvas declared before
-var canvas = document.getElementById("spacing");
-canvas.width = X_BORDER - 50; //to allow space for info canvas as well
+canvas = document.getElementById("spacing");
+canvas.width = X_BORDER - (X_BORDER/2); //to allow space for info canvas as well
 
 //set up width and height for the info canvas declared before
-var canvas = document.getElementById("info");
+canvas = document.getElementById("info");
 canvas.width = INFO_WIDTH;
 canvas.height = INFO_HEIGHT;
 
@@ -89,6 +90,14 @@ $.getJSON("data.json", function (graph) {
     sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
     sim.force("linkForce").links(graph.links); //assign the linkForce to graph.links.
 
+    container
+      .call(d3.drag()
+          .container(container.node())
+          .subject(dragsubject)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
 
     /**
       * Draws the graph's nodes and edges
@@ -111,7 +120,35 @@ $.getJSON("data.json", function (graph) {
         graph.nodes.forEach(drawNode); //draw all nodes
     }
 
+    //Source: Mike bostock's function
+    function dragsubject() {
+    return sim.find(d3.event.x, d3.event.y);
+    }
+
 });
+
+//Source: Mike bostock's function
+function dragstarted() {
+  if (!d3.event.active) sim.alphaTarget(0.3).restart();
+  d3.event.subject.fx = d3.event.subject.x;
+  d3.event.subject.fy = d3.event.subject.y;
+    force.start()
+}
+
+//Source: Mike bostock's function
+function dragged() {
+  d3.event.subject.fx = d3.event.x;
+  d3.event.subject.fy = d3.event.y;
+}
+
+//Source: Mike bostock's function
+function dragended() {
+  if (!d3.event.active) sim.alphaTarget(0);
+  d3.event.subject.fx = null;
+  d3.event.subject.fy = null;
+}
+
+
 
 /**
   * Draws a node
