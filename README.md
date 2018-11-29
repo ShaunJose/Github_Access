@@ -14,6 +14,9 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 2. Pytest.
    Install: pip install -U pytest*
 
+3. d3.js.
+   Sourced in html file, no initialization required for this.
+
 
 ### Testing:
 Testing is done using "dummy classes" in 'Test_Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
@@ -76,12 +79,12 @@ Set these up to meet your desires :D
 
 ### Instructions:
 
-1. Set constants in Github_Access.py as per instructed in Limitations and save file;
+1. Set constants in Github_Access.py as per instructed in Limitations, and save file.
 
 2. Run file.
 Terminal: python Github_Access.py
 
-3. Set constants in index.html as per instructed in Limitations;
+3. Set constants in index.html as per instructed in Limitations, and save file.
 
 4. Open index.html to see visualizations.
 Terminal: open index.html -a Google\ Chrome

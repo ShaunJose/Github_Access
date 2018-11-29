@@ -86,7 +86,14 @@ var graph = {
         popularity: 4,
         followers: 400,
         location: "Vegas"
-    } ]
+    } ],
+
+    links: [
+            { source: "One", target: "Two" },
+            { source: "One", target: "Three" },
+            { source: "Four", target: "Two" },
+            { source: "Three", target: "Four" }
+        ]
 };
 
 
@@ -126,6 +133,11 @@ function drawGraph(){
     context.beginPath(); //signal that we're drawing stuff
     graph.nodes.forEach(drawNode); //draw all nodes
     context.fill(); //actually display stuff that's been created
+
+    //draw each link
+    context.beginPath(); //signal that we're drawing stuff
+    graph.links.forEach(drawLink); //draw all links
+    context.stroke(); //adisplay the strokes
 }
 
 
@@ -140,6 +152,19 @@ function drawNode(node){
     context.moveTo(node.x, node.y);
     //draw the node as a circle
     context.arc(node.x, node.y, radius, 0, Math.PI * 2);
+}
+
+/**
+  * Draws a link from a source node to a target node
+  *
+  * @param node: a node element (one user)
+  **/
+function drawLink(link){
+
+    //move cursor to source node's position
+    context.moveTo(link.source.x, link.source.y);
+    //draw a line to the target node's location
+    context.lineTo(link.target.x, link.target.y);
 }
 
 </script>
