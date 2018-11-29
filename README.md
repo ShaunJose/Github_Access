@@ -22,6 +22,9 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 4. d3.js.
    Sourced in html file, no initialization required for this.
 
+5. jQuery.
+   Also sourced in index.html. No initialization needed.
+
 
 ### Testing:
 Testing is done using "dummy classes" in 'Test_Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
