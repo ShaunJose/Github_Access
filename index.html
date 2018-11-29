@@ -81,9 +81,7 @@ sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
 sim.force("linkForce", d3.forceLink().id(function (node) { return node.username; } )); //create a link force, and look at username to find source and target nodes
 
 //loading in data grabbed from Github_Access.py, using jquery on data.JSON
-d3.json("data.json", function (err, graph) {
-
-    // if(error) throw error;
+$.getJSON("data.json", function (graph) {
 
     sim.nodes(graph.nodes); //perform a simulation on our nodes
     sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
