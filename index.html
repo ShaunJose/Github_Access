@@ -7,7 +7,7 @@
     <title> d3 Network Visualizations </title>
 
     <!-- meta info -->
-    <meta charset="uft-8">
+    <meta charset="utf-8">
     <meta name = "description" content = "Network Visualizations (see README)">
     <meta name = "author" content = "Shaun Jose">
 
@@ -61,41 +61,6 @@ context.font = "small-caps 30px Courier"
 context.fillStyle = "blue"
 context.fillText("User Information:", 25, 25,);
 
-// //making dummy graph
-// var graph = {
-//     nodes: [ {
-//         username: "One",
-//         popularity: 1,
-//         followers: 100,
-//         location: "Boston"
-//     },
-//     {
-//         username: "Two",
-//         popularity: 2,
-//         followers: 200,
-//         location: "LA"
-//     },
-//     {
-//         username: "Three",
-//         popularity: 3,
-//         followers: 300,
-//         location: "Malaysia"
-//     },
-//     {
-//         username: "Four",
-//         popularity: 4,
-//         followers: 400,
-//         location: "Vegas"
-//     } ],
-//
-//     links: [
-//             { source: "One", target: "Two" },
-//             { source: "One", target: "Three" },
-//             { source: "Four", target: "Two" },
-//             { source: "Three", target: "Two" }
-//         ]
-// };
-
 
 //create the container (canvas) where you're drawing your network, and declare attributes
 var container = d3.select("#graph");
@@ -114,9 +79,11 @@ sim.force("collide", d3.forceCollide(radius)); //nodes don't overlap
 sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
 sim.force("linkForce", d3.forceLink().id(function (node) { return node.username; } )); //create a link force, and look at username to find source and target nodes
 
-//loading in data grabbed using Github_Access.py
-d3.json("data.json", function (err, graph) {
-    if (err) throw err;
+//loading in data grabbed from Github_Access.py, using jquery on data.JSON
+d3.json("data.json", function (error, graph) {
+
+    if(error)
+        throw error;
 
     sim.nodes(graph.nodes); //perform a simulation on our nodes
     sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
@@ -169,9 +136,6 @@ function drawLink(link){
     //draw a line to the target node's location
     context.lineTo(link.target.x, link.target.y);
 }
-
-drawGraph();
-
 
 </script>
 

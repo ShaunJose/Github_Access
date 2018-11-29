@@ -1,6 +1,8 @@
 # Github_Access
 
 
+## Please refer to instructions to run (which will also point to limitations).
+
 ### Description:
 Using the Github API (in Python) and d3.js, to retrieve and display data regarding developers in the organization (set to 'HubSpot').
 
@@ -9,12 +11,15 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 
 ### Tools used:
 1. PyGithub.
-   Install: pip install PyGithub
+   Install: **pip install PyGithub**
 
 2. Pytest.
-   Install: pip install -U pytest*
+   Install: **pip install -U pytest**
 
-3. d3.js.
+3. http-server (on command line, to open up and http-server) (IMPORTANT)
+   Install: **npm install http-server -g** OR **brew install http-server -g**
+
+4. d3.js.
    Sourced in html file, no initialization required for this.
 
 
@@ -79,12 +84,19 @@ Set these up to meet your desires :D
 
 ### Instructions:
 
-1. Set constants in Github_Access.py as per instructed in Limitations, and save file.
+1. *(Optional)* Set constants in Github_Access.py as per instructed in Limitations, and save file. (default constants set work fine)
 
 2. Run file.
-Terminal: python Github_Access.py
+Terminal: **python Github_Access.py**
 
-3. Set constants in index.html as per instructed in Limitations, and save file.
+3. *(Optional)* Set constants in index.html as per instructed in Limitations, and save file. (default constants set work fine
 
-4. Open index.html to see visualizations.
-Terminal: open index.html -a Google\ Chrome
+  IMPORTANT:
+4. Open index.html to see visualizations. (Tricky).
+   - Double clicking on index.html won't work, as it doesn't grab data from an http server, and not locally. In other words, the url from where the data is being read (in this case, it's the url of the data.json file), has to start with "http://" rather than "file://", as you cannot make an AJAX call to a local resource (GET request needs http url).
+
+   - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the call to the localhost.
+
+   - To run index.html, open terminal, type in command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+
+   - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ)

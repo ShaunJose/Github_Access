@@ -1,5 +1,6 @@
 {
-  "nodes": [{
+  "nodes": [
+ {
     "username": "adamschwartz",
     "popularity": 15,
     "followers": 636,
@@ -175,7 +176,8 @@
     "followers": 18,
     "location": "Boston, MA"
   }],
-  "links": [{
+  "links": [
+  {
     "source": "adamschwartz",
     "target": "adamschwartz"
   }, {
