@@ -32,8 +32,7 @@ Testing is done using "dummy classes" in 'Test_Classes.py', which is used to cre
 
 ### Idea behind Project:
 Who are the employees in the organization that work together on outside projects or help each other with personal projects?
-Representing connections between employees of any organization who have worked together on personal or non-organization-owned repositories
-
+Representing connections between employees of any organization who have worked together on personal projects or projects in exisitng in their repositories (includes forked repositories from anywhere, including the organization)
 
 ### Data Gathering:
 All the members who work at the organization, and recorded on github.com, are gathered as github users.
@@ -76,7 +75,7 @@ Note that running the program multiple times without reasonably wide breaks in b
 
 If you decided to gather data from a big company, space out the nodes a little less, by decreasing the value of the constant REPEL_FORCE which determined how much the nodes repel from each other. This needs to be decreased in order to create space for the nodes on the screen, by "squishing" them a little more.
 
-INFO_WIDTH AND INFO_HEIGHT are the height and width of the canvas where information about the user will be displayed, when clicked on.
+INFO_WIDTH and INFO_HEIGHT are the height and width of the canvas where information about the user will be displayed, when clicked on.
 
 X_BORDER is the spacing between the graph canvas and the info canvas.
 
@@ -86,13 +85,14 @@ Set these up to meet your desires :D
 
 
 ### Instructions:
+(This assumes all tools needed have been installed or implemented in the environment).
 
 1. *(Optional)* Set constants in Github_Access.py as per instructed in Limitations, and save file. (default constants set work fine)
 
 2. Run file.
 Terminal: **python Github_Access.py**
 
-3. *(Optional)* Set constants in index.html as per instructed in Limitations, and save file. (default constants set work fine
+3. *(Optional)* Set constants in index.html as per instructed in Limitations, and save file. (default constants set work fine)
 
   IMPORTANT:
 4. Open index.html to see visualizations. (Tricky).
@@ -100,6 +100,6 @@ Terminal: **python Github_Access.py**
 
    - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the http resource.
 
-   - To run index.html, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+   - To run index.html, in terminal, type in the command: **http-server**
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
