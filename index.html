@@ -27,8 +27,9 @@
 <!-- create a canvas for the user's information -->
 <canvas id="info" width="0" height="0" style="border: 2px solid black;"> </canvas>
 
-<!-- import d3.v5..min.js -->
+<!-- import d3.v5.min.js -->
 <script src = "https://d3js.org/d3.v5.min.js"> </script>
+<!-- import jQuery -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 <!-- do the real stuff -->
@@ -68,6 +69,7 @@ var container = d3.select("#graph");
 var height = container.attr("height");
 var width = container.attr("width");
 var radius = 5;
+var colour = d3.scaleOrdinal(d3.schemeCategory10); //used for colouring nodes
 context = container.node().getContext("2d");//TODO: WEBGL WORKS?
 
 //create simulation object
@@ -96,15 +98,17 @@ $.getJSON("data.json", function (graph) {
 
         context.clearRect(0, 0, width, height);
 
-        //draw each node
-        context.beginPath(); //signal that we're drawing stuff
-        graph.nodes.forEach(drawNode); //draw all nodes
-        context.fill(); //actually display stuff that's been created
-
         //draw each link
         context.beginPath(); //signal that we're drawing stuff
+        context.globalAlpha = 0.4; //make links a little transparent
+        context.strokeStyle = "#000"; //black links (but transparent-ish)
         graph.links.forEach(drawLink); //draw all links
         context.stroke(); //adisplay the strokes
+
+        context.globalAlpha = 1.0; //everything else is opaque
+
+        //draw each node
+        graph.nodes.forEach(drawNode); //draw all nodes
     }
 
 });
@@ -115,11 +119,16 @@ $.getJSON("data.json", function (graph) {
   * @param node: a node element (one user)
   **/
 function drawNode(node){
+    //signal that we're drawing stuff
+    context.beginPath();
 
-    //set context on node
-    context.moveTo(node.x, node.y);
-    //draw the node as a circle
-    context.arc(node.x, node.y, radius, 0, Math.PI * 2);
+    //draw stuff
+    context.fillStyle = colour(node.popularity); //colour nodes based on popularity
+    context.moveTo(node.x, node.y); //set context on node
+    context.arc(node.x, node.y, radius, 0, Math.PI * 2); //draw the node as a circle
+
+    //actually display stuff that's been created
+    context.fill();
 }
 
 /**

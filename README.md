@@ -102,4 +102,4 @@ Terminal: **python Github_Access.py**
 
    - To run index.html, open terminal, type in command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
 
-   - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ)
+   - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
