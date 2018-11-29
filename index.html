@@ -92,7 +92,7 @@ var graph = {
             { source: "One", target: "Two" },
             { source: "One", target: "Three" },
             { source: "Four", target: "Two" },
-            { source: "Three", target: "Four" }
+            { source: "Three", target: "Two" }
         ]
 };
 
@@ -113,6 +113,8 @@ sim.force("y", d3.forceY(height/2)); //put nodes in the center of container hori
 sim.force("x", d3.forceX(width/2)); //put nodes in the center of container vertically
 sim.force("collide", d3.forceCollide(radius)); //nodes don't overlap
 sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
+sim.force("linkForce", d3.forceLink().id(function (node){ return node.username; } )); //create a link force, and look at username to find source and target nodes
+sim.force("linkForce").links(graph.links); //assign the linkForce to graph.links
 sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
 
 //make random positions for graph nodes
