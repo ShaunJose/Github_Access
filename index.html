@@ -61,40 +61,40 @@ context.font = "small-caps 30px Courier"
 context.fillStyle = "blue"
 context.fillText("User Information:", 25, 25,);
 
-//making dummy graph
-var graph = {
-    nodes: [ {
-        username: "One",
-        popularity: 1,
-        followers: 100,
-        location: "Boston"
-    },
-    {
-        username: "Two",
-        popularity: 2,
-        followers: 200,
-        location: "LA"
-    },
-    {
-        username: "Three",
-        popularity: 3,
-        followers: 300,
-        location: "Malaysia"
-    },
-    {
-        username: "Four",
-        popularity: 4,
-        followers: 400,
-        location: "Vegas"
-    } ],
-
-    links: [
-            { source: "One", target: "Two" },
-            { source: "One", target: "Three" },
-            { source: "Four", target: "Two" },
-            { source: "Three", target: "Two" }
-        ]
-};
+// //making dummy graph
+// var graph = {
+//     nodes: [ {
+//         username: "One",
+//         popularity: 1,
+//         followers: 100,
+//         location: "Boston"
+//     },
+//     {
+//         username: "Two",
+//         popularity: 2,
+//         followers: 200,
+//         location: "LA"
+//     },
+//     {
+//         username: "Three",
+//         popularity: 3,
+//         followers: 300,
+//         location: "Malaysia"
+//     },
+//     {
+//         username: "Four",
+//         popularity: 4,
+//         followers: 400,
+//         location: "Vegas"
+//     } ],
+//
+//     links: [
+//             { source: "One", target: "Two" },
+//             { source: "One", target: "Three" },
+//             { source: "Four", target: "Two" },
+//             { source: "Three", target: "Two" }
+//         ]
+// };
 
 
 //create the container (canvas) where you're drawing your network, and declare attributes
@@ -108,40 +108,41 @@ context = container.node().getContext("2d");//TODO: WEBGL WORKS?
 var sim = d3.forceSimulation();
 
 //do cool stuff with simulation
-sim.nodes(graph.nodes); //perform a simulation on our nodes
 sim.force("y", d3.forceY(height/2)); //put nodes in the center of container horizontally
 sim.force("x", d3.forceX(width/2)); //put nodes in the center of container vertically
 sim.force("collide", d3.forceCollide(radius)); //nodes don't overlap
 sim.force("charge", d3.forceManyBody().strength(REPEL_FORCE)); //space out nodes
-sim.force("linkForce", d3.forceLink().id(function (node){ return node.username; } )); //create a link force, and look at username to find source and target nodes
-sim.force("linkForce").links(graph.links); //assign the linkForce to graph.links
-sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
+sim.force("linkForce", d3.forceLink().id(function (node) { return node.username; } )); //create a link force, and look at username to find source and target nodes
 
-//make random positions for graph nodes
-// graph.nodes.forEach( function (node){
-//     node.x = Math.random() * width;
-//     node.y = Math.random() * height;
-// });
+//loading in data grabbed using Github_Access.py
+d3.json("data.json", function (err, graph) {
+    if (err) throw err;
 
-/**
-  * Draws the graph's nodes and edges
-  *
-  **/
-function drawGraph(){
+    sim.nodes(graph.nodes); //perform a simulation on our nodes
+    sim.on("tick", drawGraph); //call drawGraph everytime graph.nodes has new values
+    sim.force("linkForce").links(graph.links); //assign the linkForce to graph.links.
 
-    context.clearRect(0, 0, width, height);
 
-    //draw each node
-    context.beginPath(); //signal that we're drawing stuff
-    graph.nodes.forEach(drawNode); //draw all nodes
-    context.fill(); //actually display stuff that's been created
+    /**
+      * Draws the graph's nodes and edges
+      * NOTE: This function needs to be inside the json function as it uses variable graph
+      **/
+    function drawGraph(){
 
-    //draw each link
-    context.beginPath(); //signal that we're drawing stuff
-    graph.links.forEach(drawLink); //draw all links
-    context.stroke(); //adisplay the strokes
-}
+        context.clearRect(0, 0, width, height);
 
+        //draw each node
+        context.beginPath(); //signal that we're drawing stuff
+        graph.nodes.forEach(drawNode); //draw all nodes
+        context.fill(); //actually display stuff that's been created
+
+        //draw each link
+        context.beginPath(); //signal that we're drawing stuff
+        graph.links.forEach(drawLink); //draw all links
+        context.stroke(); //adisplay the strokes
+    }
+
+});
 
 /**
   * Draws a node
@@ -168,6 +169,9 @@ function drawLink(link){
     //draw a line to the target node's location
     context.lineTo(link.target.x, link.target.y);
 }
+
+drawGraph();
+
 
 </script>
 
