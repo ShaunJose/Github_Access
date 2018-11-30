@@ -100,10 +100,6 @@ Terminal: **python Github_Access.py**
 
    - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the local server.
 
-<<<<<<< HEAD
    - To host a local server, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
-=======
-   - To run index.html, in terminal, type in the command: **http-server**
->>>>>>> 9e5fdffc3757e4a86b7a55e3e0250b74daf7d460
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
