@@ -16,7 +16,7 @@ Note: Change ORGANIZATION_NAME to choose organization in question (refer to limi
 2. Pytest.
    Install: **pip install -U pytest**
 
-3. http-server (on command line, to open up and http-server) (IMPORTANT)
+3. http-server (on command line, to open up an http-server) (IMPORTANT)
    Install: **npm install http-server -g** OR **brew install http-server -g**
 
 4. d3.js.
@@ -32,8 +32,7 @@ Testing is done using "dummy classes" in 'Test_Classes.py', which is used to cre
 
 ### Idea behind Project:
 Who are the employees in the organization that work together on outside projects or help each other with personal projects?
-Representing connections between employees of any organization who have worked together on personal or non-organization-owned repositories
-
+Representing connections between employees of any organization who have worked together on personal projects or projects in exisitng in their repositories (includes forked repositories from anywhere, including the organization)
 
 ### Data Gathering:
 All the members who work at the organization, and recorded on github.com, are gathered as github users.
@@ -63,7 +62,7 @@ Analyzing a "big" organization (i.e. an organization with lots of members on git
 
 2. Another constant CONTRIBUTOR_LIMIT, analyzes only those repositories that have a number of contributors not more than CONTRIBUTOR_LIMIT.
 
-3. The last constant has been the most successful, in tackling this problem single-handedly, in the simplest way. SLEEP_VAL is the amount of seconds you want the program to do nothing for. As can been seen in the program, this is added before every statement of git API calls in a loop, and this can help as it reduces the number of git calls per second, as the program just stalls for SLEEP_VAL seconds. Increasing SLEEP_VAL would make the program slower, but would ensure that the API limit won't been reached. This should be set to 0 if no sleep is wanted (i.e. in case of HubSpot)
+3. The last constant has been the most successful, in tackling this problem single-handedly, in the simplest way. SLEEP_VAL is the amount of seconds you want the program to do nothing for. As can been seen in the program, this is added before every statement of git API calls in a loop, and this can help as it reduces the number of git calls per second, as the program just stalls for SLEEP_VAL seconds. Increasing SLEEP_VAL would make the program slower, but would ensure that the API limit won't been reached. This should be set to 0 if no sleep is wanted (i.e. in case of HubSpot or other small organizations)
 
 The conditional statements using the first two constants stated above are only attempts at providing a fix for analyzing large companies. My code works for companies that are not too large on github, like 'HubSpot', and thus, these variables and their uses have been commented out.
 
@@ -76,7 +75,7 @@ Note that running the program multiple times without reasonably wide breaks in b
 
 If you decided to gather data from a big company, space out the nodes a little less, by decreasing the value of the constant REPEL_FORCE which determined how much the nodes repel from each other. This needs to be decreased in order to create space for the nodes on the screen, by "squishing" them a little more.
 
-INFO_WIDTH AND INFO_HEIGHT are the height and width of the canvas where information about the user will be displayed, when clicked on.
+INFO_WIDTH and INFO_HEIGHT are the height and width of the canvas where information about the user will be displayed, when clicked on.
 
 X_BORDER is the spacing between the graph canvas and the info canvas.
 
@@ -86,13 +85,14 @@ Set these up to meet your desires :D
 
 
 ### Instructions:
+(This assumes all tools needed have been installed or implemented in the environment).
 
 1. *(Optional)* Set constants in Github_Access.py as per instructed in Limitations, and save file. (default constants set work fine)
 
 2. Run file.
 Terminal: **python Github_Access.py**
 
-3. *(Optional)* Set constants in index.html as per instructed in Limitations, and save file. (default constants set work fine
+3. *(Optional)* Set constants in index.html as per instructed in Limitations, and save file. (default constants set work fine)
 
   IMPORTANT:
 4. Open index.html to see visualizations. (Tricky).
@@ -100,6 +100,10 @@ Terminal: **python Github_Access.py**
 
    - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the local server.
 
+<<<<<<< HEAD
    - To host a local server, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+=======
+   - To run index.html, in terminal, type in the command: **http-server**
+>>>>>>> 9e5fdffc3757e4a86b7a55e3e0250b74daf7d460
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
