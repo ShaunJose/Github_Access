@@ -98,8 +98,8 @@ Terminal: **python Github_Access.py**
 4. Open index.html to see visualizations. (Tricky).
    - Double clicking on index.html won't work, as it doesn't grab data from an http server, but locally. In other words, the url from where the data is being read (in this case, it's the url of the data.json file), has to start with "http://" rather than "file://", as you cannot make an AJAX call to a local resource (GET request needs http url).
 
-   - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the http resource.
+   - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the local server.
 
-   - To run index.html, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+   - To host a local server, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
