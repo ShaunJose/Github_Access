@@ -100,6 +100,11 @@ Terminal: **python Github_Access.py**
 
    - Since data.json is a local file, we need a workaround. This can be done by running a web server locally, and then making the AJAX call to the local server.
 
-   - To host a local server, in terminal, type in the command: **http-server** (This assumes all tools used have been installed or implemented in the environment).
+   - To host a local server, in terminal, type in the command: **http-server** (when in the appropriate directory)
 
    - Then open the url "localhost:8080" where 8080 is the port number opened due to the command http-server, using the web browser of your choice :) (Note that port is usually 8080, but may differ based on OS)
+
+### Visualization Examples:
+
+In the folder 'HubSpot Visualizations', you will find examples of how the visualization looks when the ORGANIZATION_NAME is set to HubSpot.
+It also displays information based on the node dragged.
