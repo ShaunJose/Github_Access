@@ -3,6 +3,12 @@
 
 ## Please refer to instructions to run (which will also point to limitations).
 
+### Visualization:
+You can see the visualization created by the source files at https://ShaunJose.github.io/Github_Access
+
+Alternatively, read the instructions at the end of the file to run this program locally, if any edits suited to your needs are implemented.
+
+
 ### Description:
 Using the Github API (in Python) and d3.js, to retrieve and display data regarding developers in the organization (set to 'HubSpot').
 
