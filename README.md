@@ -3,16 +3,24 @@
 
 ## Please refer to instructions to run (which will also point to limitations).
 
-### Visualization:
-You can see the visualization created by the source files at https://ShaunJose.github.io/Github_Access
-
-Alternatively, read the instructions at the end of the file to run this program locally, if any edits suited to your needs are implemented.
-
-
 ### Description:
 Using the Github API (in Python) and d3.js, to retrieve and display data regarding developers in the organization (set to 'HubSpot').
 
 Note: Change ORGANIZATION_NAME to choose organization in question (refer to limitations at the end of the file)
+
+
+### Visualization:
+You can see the visualization created, at https://ShaunJose.github.io/Github_Access
+
+Alternatively, read the instructions at the end of the file to run this program locally, if any edits suited to your needs are implemented.
+
+1. Nodes (Circles) are employees of the organization.
+
+2. Color-coded nodes, based on popularity (which is an attribute based on number of followers).
+
+3. Links (Connections) between nodes who have worked on the same repositories
+
+4. Dragging a node displays the node's (employee's) information
 
 
 ### Tools used:
@@ -44,16 +52,6 @@ Representing connections between employees of any organization who have worked t
 All the members who work at the organization, and recorded on github.com, are gathered as github users.
 
 Data, about them as well as their repositories, are gathered.
-
-
-### Visualization:
-1. Nodes are employees of the organization.
-
-2. Color-coded nodes, based on popularity (attribute based on number of followers).
-
-3. Links between nodes who have worked on the same repositories
-
-4. Dragging a node displays the node's (employee's) information
 
 
 ### Limitations:
