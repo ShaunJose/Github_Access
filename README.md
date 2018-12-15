@@ -37,6 +37,8 @@ Alternatively, read the instructions at the end of the file to run this program 
 5. jQuery.
    Also sourced in index.html. No initialization needed.
 
+6. Github Pages, to create link of visualization mentioned in section Visualization.
+
 
 ### Testing:
 Testing is done using "dummy classes" in 'Test_Classes.py', which is used to create objects similar to github objects, such as NamedUser, Repository, etc, with similar attributes and functions as the Github objects.
