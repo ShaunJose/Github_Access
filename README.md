@@ -1,8 +1,6 @@
 # Github_Access
 
 
-## Please refer to instructions to run (which will also point to limitations).
-
 ### Description:
 Using the Github API (in Python) and d3.js, to retrieve and display data regarding developers in the organization (set to 'HubSpot').
 
