@@ -23,14 +23,26 @@ Alternatively, read the instructions at the end of the file to run this program 
 
 ### Tools used:
 1. PyGithub.   
-   Install: **pip install PyGithub**
+```
+pip install PyGithub
+```
 
 2. Pytest.   
-   Install: **pip install -U pytest**
+```
+pip install -U pytest
+```
 
-3. http-server (on command line, to open up an http-server) (IMPORTANT)   
-   Install: **npm install http-server -g** OR **brew install http-server -g**
+3. http-server (on command line, to open up an http-server)
+```
+npm install http-server -g
+```
 
+or
+
+```
+brew install http-server -g
+```  
+  
 4. d3.js.    
    Sourced in html file, no initialization required for this.
 
