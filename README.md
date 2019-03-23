@@ -28,21 +28,21 @@ pip install PyGithub
 ```
 
 2. Pytest.   
-```
-pip install -U pytest
-```
+  ```
+  pip install -U pytest
+  ```
 
 3. http-server (on command line, to open up an http-server)
-```
-npm install http-server -g
-```
+  ```
+  npm install http-server -g
+  ```
 
 or
 
-```
-brew install http-server -g
-```  
-  
+  ```
+  brew install http-server -g
+  ```  
+
 4. d3.js.    
    Sourced in html file, no initialization required for this.
 
